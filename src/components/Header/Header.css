@@ -1,26 +1,44 @@
 .page-header {
-  background: linear-gradient(135deg, var(--blue-light), var(--white));
-  padding: 2rem;
-  border-left: 5px solid var(--blue-primary);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(232, 241, 251, 0.9));
+  padding: 2rem 2.25rem;
+  border-left: 4px solid var(--blue-accent);
   margin-bottom: 2rem;
   border-radius: 0 var(--radius) var(--radius) 0;
+  box-shadow: var(--shadow);
+  position: relative;
+  overflow: hidden;
+  animation: fadeInUp 0.5s ease both;
+}
+
+.page-header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 200px;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.06));
+  pointer-events: none;
 }
 
 .page-header h1 {
   color: var(--blue-dark);
   margin: 0;
-  font-size: 1.75rem;
+  font-size: 1.85rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
 }
 
 .subtitle {
   color: var(--text-muted);
   margin-top: 0.5rem;
   font-size: 1rem;
+  line-height: 1.5;
 }
 
 @media (max-width: 768px) {
   .page-header {
-    padding: 1.25rem;
+    padding: 1.25rem 1.5rem;
   }
 
   .page-header h1 {

@@ -1,18 +1,10 @@
-import Sidebar from "../Sidebar/Sidebar";
+import Sidebar from '../Sidebar/Sidebar';
 
-export default function Layout({ children }) {
-  return (
-    <>
-      <Sidebar />
+const Layout = ({ children }) => (
+  <div className="app-layout">
+    <Sidebar />
+    <div className="layout-content">{children}</div>
+  </div>
+);
 
-      <main
-        style={{
-          marginLeft: "250px",
-          padding: "20px"
-        }}
-      >
-        {children}
-      </main>
-    </>
-  );
-}
+export default Layout;

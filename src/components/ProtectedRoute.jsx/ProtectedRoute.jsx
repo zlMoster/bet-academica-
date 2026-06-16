@@ -3,13 +3,18 @@ import { Navigate } from 'react-router-dom';
 import { AuthContext } from '../../contexts/AuthContext';
 import Loading from '../Loading/Loading';
 
-const ProtectedRoute = ({ children, isAdminOnly }) => {
+const ProtectedRoute = ({ children, allowedRoles, isAdminOnly }) => {
   const { user, loading } = useContext(AuthContext);
 
   if (loading) return <Loading />;
+  if (!user) return <Navigate to="/login" replace />;
 
-  if (!user) return <Navigate to="/login" />;
-  if (isAdminOnly && user.perfil !== 'admin') return <Navigate to="/dashboard" />;
+  const roles = allowedRoles || (isAdminOnly ? ['admin'] : ['user', 'admin']);
+
+  if (!roles.includes(user.perfil)) {
+    const redirect = user.perfil === 'admin' ? '/admin/events' : '/dashboard';
+    return <Navigate to={redirect} replace />;
+  }
 
   return children;
 };

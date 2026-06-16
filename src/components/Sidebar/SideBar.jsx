@@ -1,35 +1,38 @@
-import { Link } from "react-router-dom";
-import "./sidebar.css";
+import { useContext } from 'react';
+import { NavLink } from 'react-router-dom';
+import { AuthContext } from '../../contexts/AuthContext';
+import '../../styles/sidebar.css';
 
-export default function Sidebar() {
+const Sidebar = () => {
+  const { user } = useContext(AuthContext);
+  const isAdmin = user?.perfil === 'admin';
+
+  const linkClass = ({ isActive }) => (isActive ? 'sidebar-link active' : 'sidebar-link');
 
   return (
-    <div className="sidebar">
+    <aside className="sidebar">
+      <div className="sidebar-brand">
+        <span>⚽</span>
+        <strong>Bet Acadêmica</strong>
+      </div>
 
-      <h4 className="text-center mb-4">
-        Fantasy App
-      </h4>
-
-      <Link to="/dashboard">
-        <i className="bi bi-speedometer2"></i>
-        Dashboard
-      </Link>
-
-      <Link to="/ranking">
-        <i className="bi bi-trophy-fill"></i>
-        Ranking
-      </Link>
-
-      <Link to="/profile">
-        <i className="bi bi-person-fill"></i>
-        Perfil
-      </Link>
-
-      <Link to="/admin/users">
-        <i className="bi bi-people-fill"></i>
-        Usuários
-      </Link>
-
-    </div>
+      {isAdmin ? (
+        <>
+          <NavLink to="/admin/events" className={linkClass}>📋 Eventos</NavLink>
+          <NavLink to="/admin/users" className={linkClass}>👥 Usuários</NavLink>
+          <NavLink to="/profile" className={linkClass}>👤 Perfil</NavLink>
+        </>
+      ) : (
+        <>
+          <NavLink to="/dashboard" className={linkClass}>📊 Dashboard</NavLink>
+          <NavLink to="/events" className={linkClass}>🏟️ Eventos</NavLink>
+          <NavLink to="/bets/history" className={linkClass}>📜 Histórico</NavLink>
+          <NavLink to="/ranking" className={linkClass}>🏆 Ranking</NavLink>
+          <NavLink to="/profile" className={linkClass}>👤 Perfil</NavLink>
+        </>
+      )}
+    </aside>
   );
-}
+};
+
+export default Sidebar;
