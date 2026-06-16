@@ -1,0 +1,29 @@
+.page-header {
+  background: linear-gradient(135deg, var(--blue-light), var(--white));
+  padding: 2rem;
+  border-left: 5px solid var(--blue-primary);
+  margin-bottom: 2rem;
+  border-radius: 0 var(--radius) var(--radius) 0;
+}
+
+.page-header h1 {
+  color: var(--blue-dark);
+  margin: 0;
+  font-size: 1.75rem;
+}
+
+.subtitle {
+  color: var(--text-muted);
+  margin-top: 0.5rem;
+  font-size: 1rem;
+}
+
+@media (max-width: 768px) {
+  .page-header {
+    padding: 1.25rem;
+  }
+
+  .page-header h1 {
+    font-size: 1.35rem;
+  }
+}

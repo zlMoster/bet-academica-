@@ -1,0 +1,10 @@
+{
+  "users": [
+    { "id": 1, "nome": "Admin", "email": "admin@bet.com", "senha": "123", "perfil": "admin" },
+    { "id": 2, "nome": "Jogador", "email": "user@bet.com", "senha": "123", "perfil": "user", "saldo": 1000 }
+  ],
+  "events": [
+    { "id": 1, "nome": "Final Champions League", "esporte": "Futebol", "status": "aberto", "odd": 2.5 }
+  ],
+  "bets": []
+}

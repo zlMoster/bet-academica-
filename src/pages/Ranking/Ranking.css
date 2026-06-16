@@ -1,0 +1,65 @@
+.ranking-podium {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+.podium-item {
+  background: var(--white);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  text-align: center;
+  box-shadow: var(--shadow);
+  border: 2px solid var(--border);
+  min-width: 160px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.podium-1 {
+  border-color: #fbbf24;
+  transform: scale(1.05);
+  background: linear-gradient(180deg, #fffbeb, var(--white));
+}
+
+.podium-2 {
+  border-color: #94a3b8;
+}
+
+.podium-3 {
+  border-color: #d97706;
+}
+
+.podium-medal {
+  font-size: 2rem;
+}
+
+.podium-name {
+  font-weight: 700;
+  color: var(--blue-dark);
+}
+
+.podium-balance {
+  color: var(--blue-primary);
+  font-weight: 600;
+}
+
+.ranking-top {
+  background: var(--blue-light) !important;
+}
+
+@media (max-width: 768px) {
+  .ranking-podium {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .podium-1 {
+    transform: none;
+    order: -1;
+  }
+}
