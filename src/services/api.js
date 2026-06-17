@@ -8,8 +8,10 @@ api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (!error.response) {
+      console.error('API network error:', error.message, error.config && error.config.url);
+      const target = (error.config && error.config.url) || api.defaults.baseURL;
       return Promise.reject(
-        new Error('Servidor indisponível. Execute "npm run server" para iniciar o JSON server.')
+        new Error(`Servidor indisponível em ${target}. Execute "npm run server" para iniciar o JSON server. Detalhe: ${error.message}`)
       );
     }
     return Promise.reject(error);

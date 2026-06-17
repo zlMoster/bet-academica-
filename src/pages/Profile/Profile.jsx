@@ -150,7 +150,6 @@ const Profile = () => {
     try {
       const amount = Number(walletForm.valor);
 
-      // Persist the operation on the server and refresh local user and transactions
       if (walletForm.tipo === 'saque') {
         const { transaction, novoSaldo } = await createWithdraw(user.id, amount);
         await refreshUser();

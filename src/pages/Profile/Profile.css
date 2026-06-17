@@ -1,4 +1,3 @@
-/* ===== Profile Page ===== */
 .profile-page {
   max-width: 1100px;
 }
@@ -103,7 +102,6 @@
   background: rgba(255,255,255,0.25);
 }
 
-/* Tabs */
 .profile-tabs {
   display: flex;
   gap: 0.35rem;
@@ -174,7 +172,6 @@
   margin-bottom: 1rem;
 }
 
-/* Mini stats */
 .mini-stats {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -217,7 +214,6 @@
   letter-spacing: 0.03em;
 }
 
-/* Quick links */
 .quick-links {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -247,7 +243,6 @@
   transform: translateX(4px);
 }
 
-/* Info list */
 .info-list {
   list-style: none;
   display: flex;
@@ -277,7 +272,6 @@
   font-size: 0.95rem;
 }
 
-/* Wallet */
 .wallet-card {
   background: linear-gradient(135deg, #0f3460, var(--blue-primary));
   color: var(--white);

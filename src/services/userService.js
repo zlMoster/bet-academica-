@@ -5,7 +5,6 @@ export const getUsers = () => userCrud.getAll();
 export const getUserById = (id) => userCrud.getById(id);
 
 export const createUser = async (data) => {
-  // Ensure the created user has a numeric, sequential ID when not provided
   if (data && (data.id === undefined || data.id === null)) {
     const { data: allUsers } = await userCrud.getAll();
     const numericIds = allUsers
