@@ -1,4 +1,6 @@
-﻿# Bet Acadêmica
+﻿# G2XBet
+
+Trabalho feito por: Gustavo Henrique Nunes de Oliveira e Matheus Alves Costa
 
 Aplicação de apostas simuladas construída com React + Vite e um backend mock usando `json-server`.
 
@@ -20,11 +22,6 @@ O projeto permite:
 - Axios
 - Bootstrap 5
 - json-server
-
-## Pré-requisitos
-
-- Node.js 18+ (recomendado)
-- npm
 
 ## Instalação
 
@@ -87,7 +84,3 @@ O backend usa `src/db.json` como fonte de dados e expõe:
 - `src/contexts/` — contexto de autenticação e usuário
 - `src/pages/` — páginas da aplicação
 - `src/db.json` — banco de dados mock usado pelo `json-server`
-
-## Notas
-
-Este projeto usa um backend mock; o `json-server` salva os dados diretamente em `src/db.json`, então as alterações de saldo e transações permanecem entre reloads. Se precisar adaptar para um backend real, basta trocar os serviços de API.
