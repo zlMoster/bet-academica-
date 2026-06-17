@@ -116,3 +116,5 @@ Exemplos de contas disponíveis em `src/db.json`:
 - Garantir que a validação de e-mail fosse mais forte do que apenas `@` e `.com`.
 - Sincronizar o estado do usuário entre o `AuthContext`, `UserContext` e o armazenamento local.
 - Aplicar proteção de rotas para perfis de usuário e administrador.
+
+## Melhorias futuras
