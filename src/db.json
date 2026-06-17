@@ -1,10 +1,119 @@
 {
   "users": [
-    { "id": 1, "nome": "Admin", "email": "admin@bet.com", "senha": "123", "perfil": "admin" },
-    { "id": 2, "nome": "Jogador", "email": "user@bet.com", "senha": "123", "perfil": "user", "saldo": 1000 }
+    {
+      "id": "1",
+      "nome": "Admin",
+      "email": "admin@bet.com",
+      "senha": "123",
+      "perfil": "admin",
+      "saldo": 0
+    },
+    {
+      "id": "2",
+      "nome": "João Jogador",
+      "email": "user@bet.com",
+      "senha": "123",
+      "perfil": "user",
+      "saldo": 5000
+    },
+    {
+      "id": "3",
+      "nome": "Gustavo",
+      "email": "gustavoteste@gmail.com",
+      "senha": "12317651",
+      "perfil": "user",
+      "saldo": 4320
+    },
+    {
+      "id": "4",
+      "nome": "Gabriel",
+      "email": "gabriel123@gmail.com",
+      "senha": "gabriel123",
+      "perfil": "user",
+      "saldo": 3200
+    }
   ],
   "events": [
-    { "id": 1, "nome": "Final Champions League", "esporte": "Futebol", "status": "aberto", "odd": 2.5 }
+    {
+      "nome": "Flamengo x Vasco",
+      "esporte": "Futebol",
+      "data": "2026-06-20",
+      "odd_casa": 1.4,
+      "odd_empate": 3,
+      "odd_visitante": 2,
+      "status": "aberto",
+      "resultado": null,
+      "id": "C-QVi6A_LxY"
+    },
+    {
+      "nome": "Brasil x Haiti",
+      "esporte": "Futebol",
+      "data": "2026-06-19",
+      "odd_casa": 1.04,
+      "odd_empate": 5,
+      "odd_visitante": 10,
+      "status": "aberto",
+      "resultado": null,
+      "id": "T0KJkW5_CcQ"
+    },
+    {
+      "nome": "Los Angeles Lakers x Boston Celtics",
+      "esporte": "Basquete",
+      "data": "2026-07-25",
+      "odd_casa": 2,
+      "odd_empate": 2.4,
+      "odd_visitante": 1.6,
+      "status": "aberto",
+      "resultado": null,
+      "id": "6exgmLUCItw"
+    },
+    {
+      "nome": "Brasil x Argentina",
+      "esporte": "Vôlei",
+      "data": "2026-10-23",
+      "odd_casa": 1.2,
+      "odd_empate": 2,
+      "odd_visitante": 2.5,
+      "status": "aberto",
+      "resultado": null,
+      "id": "19zUdx1-6rg"
+    },
+    {
+      "nome": "Rafael Nadal x João Fonseca",
+      "esporte": "Futebol",
+      "data": "2026-08-20",
+      "odd_casa": 1.8,
+      "odd_empate": 5,
+      "odd_visitante": 2.6,
+      "status": "aberto",
+      "resultado": null,
+      "id": "Ph1oIOP7Lpg"
+    }
   ],
-  "bets": []
+  "bets": [
+    {
+      "id": "4iSbNEWSYCk"
+    }
+  ],
+  "transactions": [
+    {
+      "userId": null,
+      "tipo": "saque",
+      "valor": 100,
+      "descricao": "Saque fictício",
+      "status": "concluido",
+      "data": "2026-06-17",
+      "id": "t0qDttg2hpk"
+    },
+    {
+      "userId": null,
+      "tipo": "deposito",
+      "valor": 1002,
+      "descricao": "Depósito fictício",
+      "status": "concluido",
+      "data": "2026-06-17",
+      "id": "F9ULFS4vJKY"
+    }
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
 }

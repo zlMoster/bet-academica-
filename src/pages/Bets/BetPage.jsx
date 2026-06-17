@@ -1,30 +1,50 @@
 import { useEffect, useState, useContext } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../contexts/AuthContext';
+import { useUser } from '../../contexts/UserContext';
 import Header from '../../components/Header/Header';
 import Card from '../../components/Card/Card';
 import Loading from '../../components/Loading/Loading';
 import { getEventById } from '../../services/eventService';
-import { placeBet } from '../../services/betService';
-import { getUserById, updateUserBalance } from '../../services/userService';
+import { getBetsByUserAndEvent, placeBet } from '../../services/betService';
+import { updateUserBalance } from '../../services/userService';
+import { validateBetAmount } from '../../components/utils/validators';
 
 const BetPage = () => {
   const { eventId } = useParams();
-  const { user, updateUser } = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
+  const { refreshUser } = useUser();
   const navigate = useNavigate();
   const [event, setEvent] = useState(null);
   const [palpite, setPalpite] = useState('');
   const [valor, setValor] = useState('');
+  const [existingBet, setExistingBet] = useState(null);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
-    getEventById(eventId)
-      .then((res) => setEvent(res.data))
-      .catch(() => setError('Evento não encontrado'))
-      .finally(() => setLoading(false));
-  }, [eventId]);
+    const loadEventAndBet = async () => {
+      setLoading(true);
+      try {
+        if (user?.id) await refreshUser();
+
+        const [eventRes, betRes] = await Promise.all([
+          getEventById(eventId),
+          user?.id ? getBetsByUserAndEvent(eventId, user.id) : Promise.resolve({ data: [] })
+        ]);
+
+        setEvent(eventRes.data);
+        setExistingBet(betRes.data[0] || null);
+      } catch {
+        setError('Evento não encontrado');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadEventAndBet();
+  }, [eventId, refreshUser, user?.id]);
 
   const getOdd = () => {
     if (!event || !palpite) return 0;
@@ -44,11 +64,18 @@ const BetPage = () => {
       return;
     }
 
-    const betValue = Number(valor);
-    if (betValue <= 0 || betValue > user.saldo) {
-      setError('Valor inválido ou saldo insuficiente.');
+    const amountError = validateBetAmount(valor, Number(user.saldo));
+    if (amountError) {
+      setError(amountError);
       return;
     }
+
+    if (existingBet) {
+      setError('Você já apostou neste evento. Não é possível apostar novamente.');
+      return;
+    }
+
+    const betValue = Number(valor);
 
     setSubmitting(true);
     try {
@@ -61,15 +88,14 @@ const BetPage = () => {
         valor: betValue,
         odd,
         status: 'pendente',
+        retorno: 0,
         data: new Date().toISOString().split('T')[0]
       });
 
-      const novoSaldo = user.saldo - betValue;
+      const novoSaldo = Number(user.saldo) - betValue;
       await updateUserBalance(user.id, novoSaldo);
-      const { data: updatedUser } = await getUserById(user.id);
-      updateUser(updatedUser);
+      await refreshUser();
 
-      alert('Aposta realizada com sucesso!');
       navigate('/bets/history');
     } catch {
       setError('Erro ao realizar aposta.');
@@ -88,27 +114,36 @@ const BetPage = () => {
   ].filter((o) => o.show);
 
   return (
-    <div className="page-content">
+    <div className="page-content animate-fade-in">
       <Header title="Fazer Aposta" subtitle={event.nome} />
 
-      <div style={{ maxWidth: '500px', margin: '0 auto' }}>
+      <div className="bet-form-container">
         <Card>
-          <p style={{ marginBottom: '1rem' }}>
-            <strong>Esporte:</strong> {event.esporte}<br />
-            <strong>Data:</strong> {event.data}<br />
-            <strong>Seu saldo:</strong> R$ {user.saldo?.toFixed(2)}
-          </p>
+          <div className="bet-event-info">
+            <span><strong>Esporte:</strong> {event.esporte}</span>
+            <span><strong>Data:</strong> {event.data}</span>
+            <span className="bet-balance">Saldo: R$ {Number(user.saldo).toFixed(2)}</span>
+          </div>
 
-          {error && <p style={{ color: 'var(--danger)', marginBottom: '1rem' }}>{error}</p>}
+          {error && <div className="alert alert-danger">{error}</div>}
+
+          {existingBet && (
+            <div className="alert alert-warning">
+              Você já apostou neste evento no resultado <strong>{existingBet.palpite}</strong>.
+              Não é possível apostar novamente neste jogo.
+            </div>
+          )}
 
           <form onSubmit={handleBet}>
             <div className="form-group">
-              <label>Palpite</label>
+              <label htmlFor="palpite">Palpite</label>
               <select
+                id="palpite"
                 className="form-select"
                 value={palpite}
                 onChange={(e) => setPalpite(e.target.value)}
                 required
+                disabled={Boolean(existingBet)}
               >
                 <option value="">Selecione...</option>
                 {palpiteOptions.map((o) => (
@@ -118,26 +153,29 @@ const BetPage = () => {
             </div>
 
             <div className="form-group">
-              <label>Valor da Aposta (R$)</label>
+              <label htmlFor="valor">Valor da Aposta (R$)</label>
               <input
+                id="valor"
                 type="number"
                 className="form-input"
                 min="1"
                 max={user.saldo}
                 step="1"
                 value={valor}
-                onChange={(e) => setValor(e.target.value)}
+                onChange={(e) => setValor(e.target.value.replace(/[^0-9]/g, ''))}
+                placeholder="Ex: 100"
                 required
+                disabled={Boolean(existingBet)}
               />
             </div>
 
             {palpite && valor && (
-              <p style={{ marginBottom: '1rem', color: 'var(--blue-primary)', fontWeight: 600 }}>
-                Retorno potencial: R$ {retorno}
-              </p>
+              <div className="bet-return-preview">
+                Retorno potencial: <strong>R$ {retorno}</strong>
+              </div>
             )}
 
-            <button type="submit" className="btn btn-primary" disabled={submitting} style={{ width: '100%' }}>
+            <button type="submit" className="btn btn-primary btn-block" disabled={submitting || Boolean(existingBet)}>
               {submitting ? 'Processando...' : 'Confirmar Aposta'}
             </button>
           </form>

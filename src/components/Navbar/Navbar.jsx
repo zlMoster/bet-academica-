@@ -22,8 +22,7 @@ const Navbar = () => {
   return (
     <nav className="navbar">
       <Link to={isAdmin ? '/admin/events' : '/dashboard'} className="navbar-brand">
-        <span className="brand-icon">⚽</span>
-        Bet Acadêmica
+        G2XBet
       </Link>
 
       <div className="navbar-links">

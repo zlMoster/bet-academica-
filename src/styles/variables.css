@@ -1,19 +1,30 @@
 :root {
   --blue-primary: #1e56a0;
-  --blue-dark: #0d3b7a;
+  --blue-dark: #0a2d5c;
   --blue-light: #e8f1fb;
   --blue-accent: #3b82f6;
   --blue-hover: #164a8a;
-  --success: #16a34a;
+  --blue-glow: rgba(59, 130, 246, 0.35);
+  --success: #059669;
+  --success-light: #d1fae5;
   --warning: #d97706;
+  --warning-light: #fef3c7;
   --danger: #dc2626;
+  --danger-light: #fee2e2;
   --bg-color: #f0f4f8;
-  --text-color: #1e293b;
+  --bg-gradient: linear-gradient(135deg, #f0f4f8 0%, #e2eaf3 50%, #f0f4f8 100%);
+  --text-color: #0f172a;
   --text-muted: #64748b;
   --white: #ffffff;
   --border: #cbd5e1;
-  --shadow: 0 4px 6px -1px rgba(30, 86, 160, 0.1), 0 2px 4px -2px rgba(30, 86, 160, 0.1);
-  --shadow-lg: 0 10px 25px -5px rgba(30, 86, 160, 0.15);
-  --radius: 12px;
-  --radius-sm: 8px;
+  --border-focus: #3b82f6;
+  --shadow: 0 4px 6px -1px rgba(30, 86, 160, 0.08), 0 2px 4px -2px rgba(30, 86, 160, 0.06);
+  --shadow-md: 0 8px 20px -4px rgba(30, 86, 160, 0.12);
+  --shadow-lg: 0 20px 40px -8px rgba(13, 59, 122, 0.18);
+  --shadow-glow: 0 0 24px rgba(59, 130, 246, 0.25);
+  --radius: 16px;
+  --radius-sm: 10px;
+  --radius-xs: 6px;
+  --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-bounce: 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
 }

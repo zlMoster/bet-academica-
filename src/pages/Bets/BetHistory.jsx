@@ -1,5 +1,6 @@
 import { useEffect, useState, useContext } from 'react';
 import { AuthContext } from '../../contexts/AuthContext';
+import { useUser } from '../../contexts/UserContext';
 import Header from '../../components/Header/Header';
 import Loading from '../../components/Loading/Loading';
 import { getHistory } from '../../services/betService';
@@ -18,21 +19,34 @@ const palpiteLabel = {
 
 const BetHistory = () => {
   const { user } = useContext(AuthContext);
+  const { refreshUser } = useUser();
   const [bets, setBets] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    getHistory(user.id).then((res) => {
-      setBets(res.data.reverse());
-      setLoading(false);
-    });
-  }, [user.id]);
+    const load = async () => {
+      await refreshUser();
+      try {
+        const res = await getHistory(user.id);
+        setBets(res.data.reverse());
+      } catch {
+        setBets([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+    load();
+  }, [user.id, refreshUser]);
 
   if (loading) return <Loading />;
 
   return (
     <div className="page-content">
-      <Header title="Histórico de Apostas" subtitle="Acompanhe todas as suas apostas fictícias" />
+      <Header title="Histórico de Apostas" subtitle="Acompanhe todas as suas apostas" />
+
+      <p style={{ marginBottom: '1rem', color: 'var(--text-muted)' }}>
+        Saldo atual: <strong style={{ color: 'var(--blue-primary)' }}>R$ {Number(user.saldo).toFixed(2)}</strong>
+      </p>
 
       {bets.length === 0 ? (
         <div className="empty-state">
@@ -61,7 +75,7 @@ const BetHistory = () => {
                 <td>{bet.odd}</td>
                 <td>
                   {bet.status === 'ganhou'
-                    ? `R$ ${(bet.valor * bet.odd).toFixed(2)}`
+                    ? `R$ ${Number(bet.retorno || bet.valor * bet.odd).toFixed(2)}`
                     : bet.status === 'pendente'
                       ? `R$ ${(bet.valor * bet.odd).toFixed(2)} (pot.)`
                       : '-'}

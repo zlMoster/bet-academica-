@@ -1,16 +1,16 @@
-import api from './api';
+import { eventCrud } from './crudService';
 
-export const getEvents = () => api.get('/events');
+export const getEvents = () => eventCrud.getAll();
 
-export const getEventById = (id) => api.get(`/events/${id}`);
+export const getEventById = (id) => eventCrud.getById(id);
 
-export const createEvent = (eventData) => api.post('/events', eventData);
+export const createEvent = (eventData) => eventCrud.create(eventData);
 
-export const updateEvent = (id, eventData) => api.patch(`/events/${id}`, eventData);
+export const updateEvent = (id, eventData) => eventCrud.update(id, eventData);
 
-export const updateEventStatus = (id, status) => api.patch(`/events/${id}`, { status });
+export const updateEventStatus = (id, status) => eventCrud.update(id, { status });
 
-export const deleteEvent = (id) => api.delete(`/events/${id}`);
+export const deleteEvent = (id) => eventCrud.remove(id);
 
 export const informResult = (id, resultado) =>
-  api.patch(`/events/${id}`, { resultado, status: 'finalizado' });
+  eventCrud.update(id, { resultado, status: 'finalizado' });

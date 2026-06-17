@@ -1,95 +1,78 @@
-import { useEffect, useState, useContext } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { AuthContext } from '../../contexts/AuthContext';
 import Header from '../../components/Header/Header';
 import Card from '../../components/Card/Card';
 import Loading from '../../components/Loading/Loading';
 import { getEvents } from '../../services/eventService';
-import { getHistory } from '../../services/betService';
 
-const Dashboard = () => {
-  const { user } = useContext(AuthContext);
+const Events = () => {
   const [events, setEvents] = useState([]);
-  const [bets, setBets] = useState([]);
+  const [filter, setFilter] = useState('todos');
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const load = async () => {
-      const [eventsRes, betsRes] = await Promise.all([
-        getEvents(),
-        getHistory(user.id)
-      ]);
-      setEvents(eventsRes.data.filter((e) => e.status === 'aberto'));
-      setBets(betsRes.data);
-      setLoading(false);
-    };
-    load();
-  }, [user.id]);
+    getEvents()
+      .then((res) => setEvents(res.data))
+      .catch(() => setEvents([]))
+      .finally(() => setLoading(false));
+  }, []);
 
-  const pendingBets = bets.filter((b) => b.status === 'pendente').length;
-  const wonBets = bets.filter((b) => b.status === 'ganhou').length;
+  const sports = [...new Set(events.map((e) => e.esporte))];
+
+  const filtered = events.filter((e) => {
+    if (filter === 'todos') return e.status === 'aberto';
+    return e.status === 'aberto' && e.esporte === filter;
+  });
 
   if (loading) return <Loading />;
 
   return (
     <div className="page-content">
-      <Header
-        title={`Olá, ${user.nome}!`}
-        subtitle="Resumo da sua conta e eventos disponíveis"
-      />
+      <Header title="Eventos Disponíveis" subtitle="Escolha um evento e faça sua aposta fictícia" />
 
-      <div className="stats-grid">
-        <div className="stat-card">
-          <div className="stat-value">R$ {user.saldo?.toFixed(2)}</div>
-          <div className="stat-label">Saldo Fictício</div>
-        </div>
-        <div className="stat-card">
-          <div className="stat-value">{events.length}</div>
-          <div className="stat-label">Eventos Abertos</div>
-        </div>
-        <div className="stat-card">
-          <div className="stat-value">{bets.length}</div>
-          <div className="stat-label">Total de Apostas</div>
-        </div>
-        <div className="stat-card">
-          <div className="stat-value">{wonBets}</div>
-          <div className="stat-label">Apostas Ganhas</div>
-        </div>
+      <div style={{ marginBottom: '1.5rem', display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+        <button
+          className={`btn btn-sm ${filter === 'todos' ? 'btn-primary' : 'btn-secondary'}`}
+          onClick={() => setFilter('todos')}
+        >
+          Todos
+        </button>
+        {sports.map((sport) => (
+          <button
+            key={sport}
+            className={`btn btn-sm ${filter === sport ? 'btn-primary' : 'btn-secondary'}`}
+            onClick={() => setFilter(sport)}
+          >
+            {sport}
+          </button>
+        ))}
       </div>
 
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
-        <h2 style={{ color: 'var(--blue-dark)' }}>Eventos Disponíveis</h2>
-        <Link to="/events" className="btn btn-primary btn-sm">Ver todos</Link>
-      </div>
-
-      {events.length === 0 ? (
+      {filtered.length === 0 ? (
         <div className="empty-state">
-          <p>Nenhum evento aberto no momento.</p>
+          <p>Nenhum evento aberto encontrado.</p>
         </div>
       ) : (
         <div className="card-grid">
-          {events.slice(0, 3).map((event) => (
-            <Card key={event.id} title={event.nome} description={`${event.esporte} • ${event.data}`}>
-              <p style={{ marginBottom: '1rem' }}>
-                <span className={`badge badge-${event.status}`}>{event.status}</span>
+          {filtered.map((event) => (
+            <Card key={event.id} title={event.nome}>
+              <p style={{ color: 'var(--text-muted)', marginBottom: '0.75rem' }}>
+                {event.esporte} • {event.data}
               </p>
+              <div style={{ display: 'flex', gap: '1rem', marginBottom: '1rem', fontSize: '0.9rem' }}>
+                <span>Casa: <strong>{event.odd_casa}</strong></span>
+                {event.odd_empate > 0 && <span>Empate: <strong>{event.odd_empate}</strong></span>}
+                <span>Visitante: <strong>{event.odd_visitante}</strong></span>
+              </div>
               <Link to={`/bets/${event.id}`} className="btn btn-primary btn-sm">
-                Apostar
+                Fazer Aposta
               </Link>
             </Card>
           ))}
-        </div>
-      )}
-
-      {pendingBets > 0 && (
-        <div style={{ marginTop: '2rem' }}>
-          <Card title="Apostas Pendentes" description={`Você tem ${pendingBets} aposta(s) aguardando resultado.`}>
-            <Link to="/bets/history" className="btn btn-secondary btn-sm">Ver histórico</Link>
-          </Card>
         </div>
       )}
     </div>
   );
 };
 
-export default Dashboard;
+export default Events;

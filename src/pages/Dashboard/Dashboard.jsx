@@ -41,7 +41,7 @@ const Dashboard = () => {
       <div className="stats-grid">
         <div className="stat-card">
           <div className="stat-value">R$ {user.saldo?.toFixed(2)}</div>
-          <div className="stat-label">Saldo Fictício</div>
+          <div className="stat-label">Saldo Disponível</div>
         </div>
         <div className="stat-card">
           <div className="stat-value">{events.length}</div>

@@ -1,4 +1,5 @@
 import { createContext, useState, useEffect } from 'react';
+import { StorageService } from '../services/StorageService';
 
 export const AuthContext = createContext();
 
@@ -7,26 +8,23 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const stored = localStorage.getItem('user');
-    if (stored) {
-      setUser(JSON.parse(stored));
-    }
+    setUser(StorageService.getUser());
     setLoading(false);
   }, []);
 
   const login = (userData) => {
     setUser(userData);
-    localStorage.setItem('user', JSON.stringify(userData));
+    StorageService.setUser(userData);
   };
 
   const logout = () => {
     setUser(null);
-    localStorage.removeItem('user');
+    StorageService.removeUser();
   };
 
   const updateUser = (userData) => {
     setUser(userData);
-    localStorage.setItem('user', JSON.stringify(userData));
+    StorageService.setUser(userData);
   };
 
   return (
