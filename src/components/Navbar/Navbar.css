@@ -6,11 +6,15 @@
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
-  min-height: 64px;
+  height: 64px; /* Mudado de min-height para height fixo de 64px */
   box-shadow: var(--shadow-lg);
-  position: sticky;
+  
+  /* AJUSTE ESSENCIAL DAQUI PARA BAIXO: */
+  position: fixed; /* Mudado de sticky para fixed */
   top: 0;
-  z-index: 100;
+  left: 0;
+  width: 100%; /* Garante que ela ocupe toda a largura da tela */
+  z-index: 1000; /* Alto o suficiente para ficar sempre por cima da Sidebar (que usa 90) */
 }
 
 .navbar-brand {
@@ -27,6 +31,7 @@
   font-size: 1.5rem;
 }
 
+/* Nota: .navbar-links foi removido do HTML, mas pode manter o CSS aqui caso use futuramente */
 .navbar-links {
   display: flex;
   gap: 0.25rem;

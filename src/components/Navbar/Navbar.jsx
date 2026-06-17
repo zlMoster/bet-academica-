@@ -25,26 +25,9 @@ const Navbar = () => {
         G2XBet
       </Link>
 
-      <div className="navbar-links">
-        {isAdmin ? (
-          <>
-            <Link to="/admin/events">Eventos</Link>
-            <Link to="/admin/users">Usuários</Link>
-          </>
-        ) : (
-          <>
-            <Link to="/dashboard">Dashboard</Link>
-            <Link to="/events">Eventos</Link>
-            <Link to="/bets/history">Histórico</Link>
-            <Link to="/ranking">Ranking</Link>
-          </>
-        )}
-        <Link to="/profile">Perfil</Link>
-      </div>
-
       <div className="navbar-user">
         <span className="user-info">
-          {user?.nome}
+          <span style={{ color: 'rgba(255, 255, 255, 0.8)', fontWeight: '500' }}>{user?.nome}</span>
           {user?.perfil === 'user' && (
             <button
               type="button"
