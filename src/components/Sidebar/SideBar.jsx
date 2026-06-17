@@ -4,11 +4,15 @@ import { AuthContext } from '../../contexts/AuthContext';
 import './Sidebar.css';
 
 const Sidebar = () => {
+  // Pegando o usuário logado para saber as permissões de acesso aos menus
   const { user } = useContext(AuthContext);
+  
+  // Define se o usuário atual tem o perfil de administrador do sistema
   const isAdmin = user?.perfil === 'admin';
 
   return (
     <div className="sidebar-container">
+      {/* O título da barra muda dinamicamente para avisar o tipo de painel */}
       <div className="sidebar-title">
         {isAdmin ? 'Painel Admin' : 'Navegação'}
       </div>
@@ -16,6 +20,7 @@ const Sidebar = () => {
       <div className="sidebar-divider" />
 
       <ul className="sidebar-menu">
+        {/* Renderização Condicional: Se for Admin, mostra apenas as ferramentas de gerenciar o app */}
         {isAdmin ? (
           <>
             <li>
@@ -30,6 +35,7 @@ const Sidebar = () => {
             </li>
           </>
         ) : (
+          /* Se for cliente comum, renderiza o menu de apostas, histórico e ranking */
           <>
             <li>
               <NavLink to="/dashboard" className="sidebar-link">
@@ -54,8 +60,10 @@ const Sidebar = () => {
           </>
         )}
         
+        {/* Divisória comum para separar as rotas principais do link de perfil */}
         <div className="sidebar-divider" />
         
+        {/* O perfil fica visível e disponível para qualquer tipo de conta */}
         <li>
           <NavLink to="/profile" className="sidebar-link">
             Perfil
@@ -63,6 +71,7 @@ const Sidebar = () => {
         </li>
       </ul>
       
+      {/* Rodapé institucional padrão da plataforma acadêmica */}
       <div className="sidebar-footer">
         © 2026 G2XBet
       </div>
